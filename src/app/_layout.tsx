@@ -1,17 +1,17 @@
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import { useEffect } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import "react-native-reanimated";
 import "../../global.css";
 
-// Ngăn màn hình Splash tự động ẩn trước khi tải xong tài nguyên
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded] = useFonts({
-    SpaceMono: require('../../assets/fonts/SpaceMono-Regular.ttf'),
+    SpaceMono: require("../../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
   useEffect(() => {
@@ -25,11 +25,26 @@ export default function RootLayout() {
   }
 
   return (
-    <>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
+    <SafeAreaProvider>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: "#0a0a0a" },
+        }}
+      >
+        <Stack.Screen name="(main)" />
+        <Stack.Screen
+          name="send"
+          options={{ presentation: "fullScreenModal", animation: "slide_from_right" }}
+        />
+        <Stack.Screen
+          name="receive"
+          options={{ presentation: "fullScreenModal", animation: "slide_from_right" }}
+        />
+        <Stack.Screen name="onboarding" options={{ presentation: "modal" }} />
+        <Stack.Screen name="permissions" options={{ presentation: "modal" }} />
       </Stack>
-      <StatusBar style="auto" />
-    </>
+      <StatusBar style="light" />
+    </SafeAreaProvider>
   );
 }
